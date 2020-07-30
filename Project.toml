@@ -1,0 +1,13 @@
+name = "MicroServiceJulia"
+uuid = "c092133c-357a-4d4c-bdf4-70f98c814a75"
+authors = ["Vanh Phom"]
+version = "0.1.0"
+
+[compat]
+julia = "1.5"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
