@@ -1,7 +1,7 @@
 module Services
 
     using Dates
-    using ..Model, ..Mapper
+    using .Model, .Mapper
 
     function createAlbum(obj)
         @assert haskey(obj, :name) && !isempty(obj.name)

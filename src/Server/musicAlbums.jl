@@ -17,4 +17,9 @@ using .Resources
 include("../Client/client.jl")
 using .Client
 
+function run()
+    Resources.run()
+    
+end
+
 end # module
