@@ -3,7 +3,6 @@ module Mapper
 using ..Model, ..Contexts, ..ConnectionPools
 using SQLite, DBInterface, Strapping, Tables
 
-# a share pool of connection to DB for workers
 const DB_POOL = Ref{ConnectionPools.Pod{ConnectionPools.Connection{SQLite.DB}}}()
 const COUNTER = Ref{Int64}(0)
 

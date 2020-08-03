@@ -1,14 +1,12 @@
 module Workers
 
-# unbuffer channel (queue) if full
-# producer will be blocked
 const WORK_QUEUE = Channel{Task}(0)
 
 macro async(thunk)
     esc(quote
         tsk = @task $thunk
         tsk.storage = current_task().storage
-        put!(Workers.WORK_QUEUE, tsk) # block if Q is full
+        put!(Workers.WORK_QUEUE, tsk)
         tsk
     end)
 end

@@ -8,7 +8,6 @@ mutable struct Context
     user::User
 end
 
-# store a user 
 function withcontext(f, user::User)
     task_local_storage(:CONTEXT, Context(user)) do
         f()

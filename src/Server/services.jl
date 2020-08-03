@@ -34,7 +34,6 @@ function deleteAlbum(id)
     return
 end
 
-# this could be expensive task assign to a worker
 function pickAlbumToListen()
     albums = Mapper.getAllAlbums()
     leastTimesPicked = minimum(x->x.timespicked, albums)

@@ -17,7 +17,6 @@ HTTP.@register(ROUTER, "PUT", "/album/*", updateAlbum)
 deleteAlbum(req) = Service.deleteAlbum(parse(Int, HTTP.URIs.splitpath(req.target)[2]))
 HTTP.@register(ROUTER, "DELETE", "/album/*", deleteAlbum)
 
-# put this task to run on worker thread
 pickAlbumToListen(req) = fetch(Workers.@async(Service.pickAlbumToListen()::Album))
 HTTP.@register(ROUTER, "GET", "/", pickAlbumToListen)
 
