@@ -1,5 +1,9 @@
 module Auth
 
+# use both cookie and header to validate user incase some server stripped out 
+# the cookie e.g. Google server then use the header to stored the verified user 
+# with the validate token
+
 using StructTypes, Dates, JWTs, HTTP
 using ..Model
 
@@ -30,31 +34,33 @@ end
 
 struct Unauthenticated <: Exception end
 
-# parsing token from HTTP request
+# parsing token from HTTP request 
+# and validate the user 
+# then add the validate token to the cookie and header
 function User(req::HTTP.Request)
     if HTTP.hasheader(req, "Cookie")
         cookies = filter(x->x.name == JWT_TOKEN_COOKIE_NAME, HTTP.cookies(req))
         if !isempty(cookies) && !isempty(cookies[1].value)
             jwt = JWT(; jwt=cookies[1].value)
-            verified = false
+            verified = false                  # start to validate the user cookie
             for kid in JWT_AUTH_KEYS[].keys
                 validate!(jwt, JWT_AUTH_KEYS[], kid[1])
                 verified |= isverified(jwt)
             end
             if verified
-                parts = claims(jwt)
+                parts = claims(jwt)  # user is good add token 
                 return User(parts["uid"], parts["aud"])
             end
         end
     elseif HTTP.hasheader(req, JWT_TOKEN_COOKIE_NAME)
         jwt = JWT(; jwt=String(HTTP.header(req, JWT_TOKEN_COOKIE_NAME)))
-        verified = false
+        verified = false                # in case cookie is stripped out use the header
         for kid in JWT_AUTH_KEYS[].keys
             validate!(jwt, JWT_AUTH_KEYS[], kid[1])
             verified |= isverified(jwt)
         end
         if verified
-            parts = claims(jwt)
+            parts = claims(jwt)   # ssame thing with the cookie
             return User(parts["uid"], parts["aud"])
         end
     end

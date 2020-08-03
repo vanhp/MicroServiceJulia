@@ -1,5 +1,11 @@
 module Mapper
 
+# manage the storage device whether it is just a dictionary/list
+# or database SQLite or some other DBs
+# it translate the Router to the actual command to the data store
+
+
+
 using ..Model, ..Contexts, ..ConnectionPools
 using SQLite, DBInterface, Strapping, Tables
 

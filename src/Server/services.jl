@@ -1,5 +1,8 @@
 module Service
 
+# organize data receive from the backend Mapper into data that
+# user expected format
+
 using Dates, ExpiringCaches
 using ..Model, ..Mapper, ..Auth
 

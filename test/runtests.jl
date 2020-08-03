@@ -5,8 +5,8 @@ const AUTHFILE = "file://" * joinpath(dirname(pathof(MusicAlbums)), "../resource
 
 server = @async MusicAlbums.run(DBFILE, AUTHFILE)
 
-Client.createUser("quinnj", "julia4evah!")
-user = Client.loginUser("quinnj", "julia4evah!")
+Client.createUser("vanhp", "julia4evah!")
+user = Client.loginUser("vanhp", "julia4evah!")
 
 using HTTP; HTTP.CookieRequest.default_cookiejar[1]
 

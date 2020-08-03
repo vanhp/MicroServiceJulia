@@ -1,5 +1,8 @@
 module Model
 
+# define the type of data that expect to use
+# and the user info that require
+
 import Base: ==
 
 using StructTypes

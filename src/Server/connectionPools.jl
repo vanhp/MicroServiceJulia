@@ -1,5 +1,10 @@
 module ConnectionPools
 
+# manage the connection to the DB when there are more user access to it
+# and incase they use the expensive operation that take long time
+# to minimize the impact and improve user exprience
+
+
 export withconnection
 
 macro v1_3(expr, elses=nothing)
