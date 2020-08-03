@@ -1,6 +1,9 @@
-using MicroServiceJulia
+using MusicAlbums
 using Test
 
-@testset "MicroServiceJulia.jl" begin
+
+@testset "../Server/MusicAlbums.jl" begin
     # Write your tests here.
+   
+
 end
