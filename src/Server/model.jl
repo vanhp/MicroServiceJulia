@@ -19,4 +19,5 @@ module Model
     Album() = Album(0, "", "", 0, String[], 0)
     Album(name, artist, year, songs) = Album(0, name, artist, year, songs, 0)
     StructTypes.StructType(::Type{Album}) = StructTypes.Mutable()   
+    StructTypes.idproperty(::Type{Album}) = :id
 end
