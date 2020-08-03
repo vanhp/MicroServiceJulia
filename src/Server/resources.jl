@@ -26,6 +26,7 @@ function contextHandler(req)
     end
 end
 
+# a authenticate router
 const AUTH_ROUTER = HTTP.Router(contextHandler)
 
 function authenticate(user::User)

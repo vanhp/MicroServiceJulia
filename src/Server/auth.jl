@@ -3,6 +3,7 @@ module Auth
 using StructTypes, Dates, JWTs, HTTP
 using ..Model
 
+# a token to indicate a user was authenticated
 const JWT_AUTH_KEYS = Ref{JWKSet}()
 
 function init(authkeysfile)
@@ -15,8 +16,10 @@ end
 const DATE_FORMAT = DateFormat("e, dd u yyyy HH:MM:SS G\\MT") # Wed, 21 Oct 2015 07:28:00 GMT
 const JWT_TOKEN_COOKIE_NAME = "X-MusicAlbums-Jwt-Token"
 
+# create a toke to identify user using cookie
 function addtoken!(resp::HTTP.Response, user::User)
     exp = Dates.now(Dates.UTC) + Dates.Hour(12)
+    # claim
     payload = Dict("iss"=>"MusicAlbums.jl", "exp"=>Dates.datetime2unix(exp), "sub"=>"managing albums", "aud"=>user.username, "uid"=>user.id)
     jwt = JWT(; payload=payload)
     keyid = first(first(JWT_AUTH_KEYS[].keys))
@@ -27,13 +30,15 @@ end
 
 struct Unauthenticated <: Exception end
 
-# parsing token from HTTP request
+# parsing token from HTTP request to user from the cookie
 function User(req::HTTP.Request)
     if HTTP.hasheader(req, "Cookie")
         cookies = filter(x->x.name == JWT_TOKEN_COOKIE_NAME, HTTP.cookies(req))
         if !isempty(cookies) && !isempty(cookies[1].value)
             jwt = JWT(; jwt=cookies[1].value)
             verified = false
+
+            # validate the user that in our storage
             for kid in JWT_AUTH_KEYS[].keys
                 validate!(jwt, JWT_AUTH_KEYS[], kid[1])
                 verified |= isverified(jwt)
