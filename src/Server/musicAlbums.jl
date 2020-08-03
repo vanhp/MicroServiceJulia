@@ -17,9 +17,20 @@ using .Resources
 include("../Client/client.jl")
 using .Client
 
-function run()
-    Resources.run()
-    
+
+include("auth.jl")
+using .Auth
+
+include("contexts.jl")
+using .Contexts
+
+
+function run(dbfile, authkeysfile)
+    Mapper.init(dbfile)
+    Auth.init(authkeysfile)
+    Resource.run()
 end
+
+
 
 end # module

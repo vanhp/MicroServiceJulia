@@ -32,5 +32,17 @@ function pickAlbumToListen()
     return JSON3.read(resp.body, Album)
 end
 
+function loginUser(username, password)
+    body = (; username, password=base64encode(password))
+    resp = HTTP.post(string(SERVER[], "/user/login"), [], JSON3.write(body))
+    return JSON3.read(resp.body, User)
+end
+
+
+function createUser(username, password)
+    body = (; username, password=base64encode(password))
+    resp = HTTP.post(string(SERVER[], "/user"), [], JSON3.write(body))
+    return JSON3.read(resp.body, User)
+end
 
 end # module
