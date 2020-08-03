@@ -1,7 +1,7 @@
 module Resource
 
 using Dates, HTTP, JSON3
-using ..Model, ..Service, ..Auth, ..Contexts
+using ..Model, ..Service, ..Auth, ..Contexts, ..Workers
 
 const ROUTER = HTTP.Router()
 
@@ -17,7 +17,8 @@ HTTP.@register(ROUTER, "PUT", "/album/*", updateAlbum)
 deleteAlbum(req) = Service.deleteAlbum(parse(Int, HTTP.URIs.splitpath(req.target)[2]))
 HTTP.@register(ROUTER, "DELETE", "/album/*", deleteAlbum)
 
-pickAlbumToListen(req) = Service.pickAlbumToListen()::Album
+# put this task to run on worker thread
+pickAlbumToListen(req) = fetch(Workers.@async(Service.pickAlbumToListen()::Album))
 HTTP.@register(ROUTER, "GET", "/", pickAlbumToListen)
 
 function contextHandler(req)
@@ -26,7 +27,6 @@ function contextHandler(req)
     end
 end
 
-# a authenticate router
 const AUTH_ROUTER = HTTP.Router(contextHandler)
 
 function authenticate(user::User)
